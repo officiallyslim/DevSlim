@@ -8,10 +8,11 @@ async function sendMessage(webhookURL) {
 
     if (sendAsEmbed) {
         payload = {
+            content: "", // Avoid having non-embed content
             embeds: [{
                 title: title || null,
-                description: description,
-                color: parseInt(color, 16)
+                description: description || null,
+                color: parseInt(color, 16) // Convert hex to integer
             }]
         };
     } else {
@@ -25,73 +26,79 @@ async function sendMessage(webhookURL) {
             body: JSON.stringify(payload)
         });
 
-        if (response.ok) {
-            alert("Message sent!");
-        } else {
-            alert("Failed to send message.");
+        if (!response.ok) {
+            alert("Error sending message.");
         }
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
+// **Load Message by ID and Populate Fields**
 async function loadMessage(webhookURL) {
-    const messageID = document.getElementById("editMessageID").value;
-    if (!messageID) {
-        alert("Enter a Message ID!");
+    const messageId = document.getElementById("editMessageID").value;
+
+    if (!messageId) {
+        alert("Please enter a message ID.");
         return;
     }
 
     try {
-        const response = await fetch(`${webhookURL}/messages/${messageID}`, {
+        const response = await fetch(`${webhookURL}/messages/${messageId}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
 
         if (!response.ok) {
-            alert("Failed to load message.");
+            alert("Message not found.");
             return;
         }
 
-        const messageData = await response.json();
-        console.log("Loaded Message Data:", messageData);
+        const data = await response.json();
 
-        // Set text content (outside embed)
-        document.getElementById("editContent").value = messageData.content || "";
+        // Load plain content (if exists)
+        document.getElementById("editContent").value = data.content || "";
 
-        // If there's an embed, load its details
-        if (messageData.embeds.length > 0) {
-            const embed = messageData.embeds[0];
+        // Check if there's an embed
+        if (data.embeds && data.embeds.length > 0) {
+            const embed = data.embeds[0];
+
             document.getElementById("embedTitle").value = embed.title || "";
             document.getElementById("embedDescription").value = embed.description || "";
-            document.getElementById("embedColor").value = embed.color ? `#${embed.color.toString(16)}` : "#ff0000";
+
+            if (embed.color) {
+                document.getElementById("embedColor").value = `#${embed.color.toString(16).padStart(6, "0")}`;
+            }
+
             document.getElementById("embedToggle").checked = true;
         } else {
             document.getElementById("embedToggle").checked = false;
         }
+
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error fetching message:", error);
     }
 }
 
+// **Edit an Existing Message**
 async function editMessage(webhookURL) {
-    const messageID = document.getElementById("editMessageID").value;
-    if (!messageID) {
-        alert("Enter a Message ID!");
-        return;
-    }
-
+    const messageId = document.getElementById("editMessageID").value;
     const newContent = document.getElementById("editContent").value;
     const newTitle = document.getElementById("embedTitle").value;
     const newDescription = document.getElementById("embedDescription").value;
     const newColor = document.getElementById("embedColor").value.replace("#", "");
-    const editAsEmbed = document.getElementById("embedToggle").checked;
+    const sendAsEmbed = document.getElementById("embedToggle").checked;
+
+    if (!messageId) {
+        alert("Please enter a message ID.");
+        return;
+    }
 
     let payload;
 
-    if (editAsEmbed) {
+    if (sendAsEmbed) {
         payload = {
-            content: newContent || "", // Ensure content is still included
+            content: "", // Ensuring only embed is sent
             embeds: [{
                 title: newTitle || null,
                 description: newDescription || null,
@@ -103,18 +110,31 @@ async function editMessage(webhookURL) {
     }
 
     try {
-        const response = await fetch(`${webhookURL}/messages/${messageID}`, {
+        const response = await fetch(`${webhookURL}/messages/${messageId}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
 
-        if (response.ok) {
-            alert("Message edited successfully!");
-        } else {
+        if (!response.ok) {
             alert("Failed to edit message.");
         }
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error editing message:", error);
     }
 }
+
+// Add event listeners
+document.getElementById("webhookForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    sendMessage(webhookURL);
+});
+
+document.getElementById("loadMessage").addEventListener("click", function () {
+    loadMessage(webhookURL);
+});
+
+document.getElementById("editForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    editMessage(webhookURL);
+});
