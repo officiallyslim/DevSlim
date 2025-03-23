@@ -3,15 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevSlim Panel</title>
+    <title>Discohook Clone</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="typewriter-container">
-        <span id="typewriter-text"></span>
+
+    <div class="container">
+        <h1>Discohook Clone</h1>
+
+        <!-- Webhook URL -->
+        <label for="webhookURL">Webhook URL</label>
+        <input type="text" id="webhookURL" placeholder="Enter Discord Webhook URL">
+
+        <!-- Plain Text Message -->
+        <label>Plain Text Message (Optional)</label>
+        <textarea id="messageContent" placeholder="Enter a message..."></textarea>
+
+        <!-- Embeds Section -->
+        <div class="embeds">
+            <h2>Embeds</h2>
+            <div id="embedsContainer"></div>
+            <button id="addEmbed">➕ Add Embed</button>
+        </div>
+
+        <!-- Buttons -->
+        <button id="sendMessage">🚀 Send Message</button>
+
+        <!-- Edit Section -->
+        <h2>Edit a Message</h2>
+        <input type="text" id="editMessageID" placeholder="Enter Message ID">
+        <button id="loadMessage">📥 Load Message</button>
+        <button id="editMessage">✏️ Edit Message</button>
     </div>
-    <br>
-    <a href="webhooks.html" class="button">Manage Webhooks</a>
+
     <script src="script.js"></script>
 </body>
 </html>
