@@ -1,76 +1,75 @@
-async function sendMessage() {
-    const webhookURL = document.getElementById("webhookURL").value;
+document.getElementById("embedToggle").addEventListener("change", function() {
+    document.getElementById("embedOptions").style.display = this.checked ? "block" : "none";
+});
+
+document.getElementById("editEmbedToggle").addEventListener("change", function() {
+    document.getElementById("editEmbedOptions").style.display = this.checked ? "block" : "none";
+});
+
+document.getElementById("sendMessage").addEventListener("click", function() {
+    const webhookUrl = document.getElementById("webhookUrl").value;
     const messageContent = document.getElementById("messageContent").value;
-    const embedTitle = document.getElementById("embedTitle").value;
-    const embedDescription = document.getElementById("embedDescription").value;
-    const embedColor = document.getElementById("embedColor").value.replace("#", "");
-
-    if (!webhookURL) return alert("Please enter a webhook URL.");
-
-    const payload = {
-        content: messageContent,
-        embeds: embedTitle || embedDescription ? [{
-            title: embedTitle,
-            description: embedDescription,
-            color: parseInt(embedColor, 16)
-        }] : []
-    };
-
-    fetch(webhookURL, {
+    const embedToggle = document.getElementById("embedToggle").checked;
+    
+    let payload = { content: messageContent };
+    
+    if (embedToggle) {
+        payload.embeds = [{
+            title: document.getElementById("embedTitle").value,
+            description: document.getElementById("embedDescription").value,
+            color: parseInt(document.getElementById("embedColor").value.replace("#", ""), 16)
+        }];
+    }
+    
+    fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-    }).then(res => {
-        if (res.ok) alert("Message sent!");
-        else alert("Failed to send message.");
-    });
-}
+    }).then(response => alert("Message Sent!"));
+});
 
-async function loadMessage() {
-    const webhookURL = document.getElementById("webhookURL").value;
-    const messageID = document.getElementById("editMessageID").value;
+document.getElementById("loadMessage").addEventListener("click", async function() {
+    const webhookUrl = document.getElementById("webhookUrl").value;
+    const messageId = document.getElementById("messageId").value;
+    
+    const webhookParts = webhookUrl.split("/");
+    const channelId = webhookParts[webhookParts.length - 2];
 
-    if (!webhookURL || !messageID) return alert("Enter webhook URL and message ID.");
+    const response = await fetch(`https://discord.com/api/v9/channels/${channelId}/messages/${messageId}`);
+    const messageData = await response.json();
 
-    try {
-        const response = await fetch(webhookURL.replace("/api/webhooks/", "/api/webhooks/messages/") + "/" + messageID);
-        const data = await response.json();
-
-        if (data.content) document.getElementById("messageContent").value = data.content;
-        if (data.embeds.length > 0) {
-            document.getElementById("embedTitle").value = data.embeds[0].title || "";
-            document.getElementById("embedDescription").value = data.embeds[0].description || "";
-        }
-    } catch (error) {
-        alert("Failed to load message.");
+    if (messageData.content) {
+        document.getElementById("editContent").value = messageData.content;
     }
-}
 
-async function editMessage() {
-    const webhookURL = document.getElementById("webhookURL").value;
-    const messageID = document.getElementById("editMessageID").value;
-    const messageContent = document.getElementById("messageContent").value;
-    const embedTitle = document.getElementById("embedTitle").value;
-    const embedDescription = document.getElementById("embedDescription").value;
-    const embedColor = document.getElementById("embedColor").value.replace("#", "");
+    if (messageData.embeds.length > 0) {
+        const embed = messageData.embeds[0];
+        document.getElementById("editEmbedToggle").checked = true;
+        document.getElementById("editEmbedOptions").style.display = "block";
+        document.getElementById("editEmbedTitle").value = embed.title || "";
+        document.getElementById("editEmbedDescription").value = embed.description || "";
+    }
+});
 
-    if (!webhookURL || !messageID) return alert("Enter webhook URL and message ID.");
+document.getElementById("editMessage").addEventListener("click", function() {
+    const webhookUrl = document.getElementById("webhookUrl").value;
+    const messageId = document.getElementById("messageId").value;
+    const editContent = document.getElementById("editContent").value;
+    const editEmbedToggle = document.getElementById("editEmbedToggle").checked;
 
-    const payload = {
-        content: messageContent,
-        embeds: embedTitle || embedDescription ? [{
-            title: embedTitle,
-            description: embedDescription,
-            color: parseInt(embedColor, 16)
-        }] : []
-    };
+    let payload = { content: editContent };
 
-    fetch(webhookURL.replace("/api/webhooks/", "/api/webhooks/messages/") + "/" + messageID, {
+    if (editEmbedToggle) {
+        payload.embeds = [{
+            title: document.getElementById("editEmbedTitle").value,
+            description: document.getElementById("editEmbedDescription").value,
+            color: parseInt(document.getElementById("editEmbedColor").value.replace("#", ""), 16)
+        }];
+    }
+
+    fetch(`${webhookUrl}/messages/${messageId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-    }).then(res => {
-        if (res.ok) alert("Message edited!");
-        else alert("Failed to edit message.");
-    });
-}
+    }).then(response => alert("Message Edited!"));
+});
