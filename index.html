@@ -3,36 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webhook Manager</title>
+    <title>DevSlim</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Webhook Manager</h1>
+        <h1>DevSlim Webhook Manager</h1>
+        
+        <label for="webhookUrl">Webhook URL:</label>
+        <input type="text" id="webhookUrl" placeholder="Enter Webhook URL...">
+        
+        <h2>Send a Message</h2>
+        <textarea id="messageContent" placeholder="Enter your message here..."></textarea>
+        
+        <div class="embed-section">
+            <label><input type="checkbox" id="embedToggle"> Send as Embed</label>
+            <div id="embedOptions">
+                <input type="text" id="embedTitle" placeholder="Embed Title">
+                <textarea id="embedDescription" placeholder="Embed Description"></textarea>
+                <input type="color" id="embedColor" value="#ff0000">
+            </div>
+        </div>
+        
+        <button id="sendMessage">Send Message</button>
 
-        <label for="webhookURL">Webhook URL:</label>
-        <input type="text" id="webhookURL" placeholder="Enter your webhook URL">
+        <h2>Edit a Message</h2>
+        <input type="text" id="messageId" placeholder="Enter Message ID">
+        <button id="loadMessage">Load Message</button>
+        <textarea id="editContent" placeholder="Edit Message..."></textarea>
 
-        <h2>Send Message</h2>
-        <textarea id="messageContent" placeholder="Message Content (Supports Multi-Line)"></textarea>
-
-        <h3>Embed Options</h3>
-        <label for="embedTitle">Embed Title:</label>
-        <input type="text" id="embedTitle" placeholder="Title">
-
-        <label for="embedDescription">Embed Description:</label>
-        <textarea id="embedDescription" placeholder="Embed Content (Supports Multi-Line)"></textarea>
-
-        <label for="embedColor">Embed Color:</label>
-        <input type="color" id="embedColor" value="#ff0000">
-
-        <button onclick="sendMessage()">Send Message</button>
-
-        <h2>Edit Message</h2>
-        <input type="text" id="editMessageID" placeholder="Message ID">
-        <button onclick="loadMessage()">Load Message</button>
-
-        <button onclick="editMessage()">Edit Message</button>
+        <div class="embed-section">
+            <label><input type="checkbox" id="editEmbedToggle"> Edit Embed</label>
+            <div id="editEmbedOptions">
+                <input type="text" id="editEmbedTitle" placeholder="Embed Title">
+                <textarea id="editEmbedDescription" placeholder="Embed Description"></textarea>
+                <input type="color" id="editEmbedColor" value="#ff0000">
+            </div>
+        </div>
+        
+        <button id="editMessage">Edit Message</button>
     </div>
 
     <script src="script.js"></script>
