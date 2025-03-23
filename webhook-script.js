@@ -1,7 +1,7 @@
 const webhooks = {
     webhook1: "https://discord.com/api/webhooks/1346170728252440668/fqkyNEgF9LDX-M3orKPrGdYtbmFFhub6WIvok1mARbB_7nOTW17b6RFTeG4dUvfUCMbU",
     webhook2: "https://discord.com/api/webhooks/1348112654148960276/NYHuXKmEQF54EHmHLNuqJsZeJLzJy0S2tRIgraxjOHKTzwAYzQlSYgHKh2eBMtHV16U4",
-    webhook3: "YOUR_DISCORD_WEBHOOK_URL_3",
+    webhook3: "https://discord.com/api/webhooks/1353305071831613492/3w8qlY9LnUmUt4Ojgx0hmcKl5bX0oJztC72qx_QyXcTvI3PQJo5bxXDTDQN0lHlwmf-J",
     webhook4: "YOUR_DISCORD_WEBHOOK_URL_4",
     webhook5: "YOUR_DISCORD_WEBHOOK_URL_5"
     // Add more as needed
