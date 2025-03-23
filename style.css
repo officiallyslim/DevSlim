@@ -1,0 +1,43 @@
+body {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    color: red;
+}
+
+.typewriter-container {
+    font-size: 2em;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 0.15em solid red;
+    width: 20ch;
+    animation: typing 3s steps(20), blink 0.75s step-end infinite alternate;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 20ch; }
+}
+
+@keyframes blink {
+    from { border-color: transparent; }
+    to { border-color: red; }
+}
+
+.login-container {
+    margin-top: 20px;
+}
+
+.login-button {
+    background-color: red;
+    color: black;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.2em;
+    border-radius: 5px;
+}
