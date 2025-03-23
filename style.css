@@ -1,42 +1,37 @@
 body {
     background-color: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: 'Courier New', Courier, monospace;
     color: red;
+    font-family: "Courier New", monospace;
     text-align: center;
+    padding: 20px;
 }
 
 .typewriter-container {
-    font-size: 2em;
-    white-space: nowrap;
+    font-size: 24px;
+    font-weight: bold;
+    height: 30px;
     overflow: hidden;
-    border-right: 0.15em solid red;
-    width: 20ch;
-    animation: typing 3s steps(20), blink 0.75s step-end infinite alternate;
 }
 
-@keyframes typing {
-    from { width: 0; }
-    to { width: 20ch; }
-}
-
-@keyframes blink {
-    from { border-color: transparent; }
-    to { border-color: red; }
-}
-
-h2 {
-    color: white;
-    margin-top: 20px;
-}
-
-input, button {
-    font-size: 16px;
+input, select, button {
+    background: black;
+    color: red;
+    border: 1px solid red;
     padding: 10px;
     margin: 5px;
+    font-family: "Courier New", monospace;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    background: red;
+    color: black;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
 }
