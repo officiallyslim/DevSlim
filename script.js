@@ -40,7 +40,7 @@ typePhrase();
 document.getElementById("webhookForm").addEventListener("submit", function(e) {
     e.preventDefault();
     
-    const webhookURL = "YOUR_DISCORD_WEBHOOK_URL";  // Replace with your webhook
+    const webhookURL = "https://discord.com/api/webhooks/1353295895613145229/4Bneq4JONcU-qnkDMvrxy0ReTJ2Rj2V1FeazoiwM5VEKmFf-aEwK_h9XcTwo6vD2Z9oI";  // Replace with your webhook
     const message = document.getElementById("message").value;
 
     fetch(webhookURL, {
