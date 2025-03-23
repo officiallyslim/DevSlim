@@ -3,35 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webhook Manager</title>
+    <title>Select Webhook</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Webhook Manager</h1>
-    
+    <h1>Select a Webhook</h1>
     <a href="index.html" class="button">Back to Home</a>
 
-    <h2>Select Webhook</h2>
-    <select id="webhookSelect"></select>
-
-    <h2>Send a Webhook Message</h2>
-    <form id="webhookForm">
-        <input type="text" id="embedTitle" placeholder="Embed Title (optional)">
-        <input type="text" id="embedDescription" placeholder="Message Content">
-        <input type="color" id="embedColor" value="#ff0000">
-        <label>
-            <input type="checkbox" id="embedToggle"> Send as Embed
-        </label>
-        <button type="submit">Send Message</button>
-    </form>
-
-    <h2>Edit Sent Message</h2>
-    <form id="editForm">
-        <input type="text" id="editMessageID" placeholder="Message ID">
-        <input type="text" id="editContent" placeholder="New Content">
-        <button type="submit">Edit Message</button>
-    </form>
-
-    <script src="webhook-script.js"></script>
+    <div class="webhook-list">
+        <a href="webhook-1.html" class="button">Webhook 1</a>
+        <a href="webhook-2.html" class="button">Webhook 2</a>
+        <a href="webhook-3.html" class="button">Webhook 3</a>
+        <a href="webhook-4.html" class="button">Webhook 4</a>
+        <a href="webhook-5.html" class="button">Webhook 5</a>
+        <!-- Repeat for all 25 webhooks -->
+    </div>
 </body>
 </html>
