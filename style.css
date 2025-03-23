@@ -8,6 +8,7 @@ body {
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     color: red;
+    text-align: center;
 }
 
 .typewriter-container {
@@ -29,15 +30,13 @@ body {
     to { border-color: red; }
 }
 
-.login-container {
+h2 {
+    color: white;
     margin-top: 20px;
 }
 
-.login-button {
-    background-color: red;
-    color: black;
-    padding: 10px 20px;
-    text-decoration: none;
-    font-size: 1.2em;
-    border-radius: 5px;
+input, button {
+    font-size: 16px;
+    padding: 10px;
+    margin: 5px;
 }
