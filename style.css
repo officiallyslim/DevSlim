@@ -13,6 +13,22 @@ body {
     overflow: hidden;
 }
 
+.button {
+    display: inline-block;
+    background: red;
+    color: black;
+    padding: 10px 20px;
+    margin-top: 20px;
+    text-decoration: none;
+    border: 1px solid red;
+}
+
+.button:hover {
+    background: black;
+    color: red;
+    border: 1px solid red;
+}
+
 input, select, button {
     background: black;
     color: red;
@@ -29,9 +45,4 @@ button {
 button:hover {
     background: red;
     color: black;
-}
-
-label {
-    display: block;
-    margin-top: 10px;
 }
