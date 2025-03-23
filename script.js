@@ -1,121 +1,76 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let embeds = [];
+async function sendMessage() {
+    const webhookURL = document.getElementById("webhookURL").value;
+    const messageContent = document.getElementById("messageContent").value;
+    const embedTitle = document.getElementById("embedTitle").value;
+    const embedDescription = document.getElementById("embedDescription").value;
+    const embedColor = document.getElementById("embedColor").value.replace("#", "");
 
-    function updateEmbedPreview() {
-        const container = document.getElementById("embedsContainer");
-        container.innerHTML = ""; 
+    if (!webhookURL) return alert("Please enter a webhook URL.");
 
-        embeds.forEach((embed, index) => {
-            const embedDiv = document.createElement("div");
-            embedDiv.className = "embed";
-            embedDiv.innerHTML = `
-                <div class="embed-header">
-                    <input type="text" class="embed-title" value="${embed.title || ""}" placeholder="Title">
-                    <input type="color" class="embed-color" value="${embed.color || "#ffffff"}">
-                </div>
-                <textarea class="embed-description" placeholder="Description">${embed.description || ""}</textarea>
-                <input type="text" class="embed-image" value="${embed.image || ""}" placeholder="Image URL">
-                <button onclick="removeEmbed(${index})">❌ Remove</button>
-            `;
-            container.appendChild(embedDiv);
-        });
-    }
+    const payload = {
+        content: messageContent,
+        embeds: embedTitle || embedDescription ? [{
+            title: embedTitle,
+            description: embedDescription,
+            color: parseInt(embedColor, 16)
+        }] : []
+    };
 
-    function addEmbed() {
-        embeds.push({
-            title: "",
-            description: "",
-            color: "#ffffff",
-            image: ""
-        });
-        updateEmbedPreview();
-    }
+    fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    }).then(res => {
+        if (res.ok) alert("Message sent!");
+        else alert("Failed to send message.");
+    });
+}
 
-    function removeEmbed(index) {
-        embeds.splice(index, 1);
-        updateEmbedPreview();
-    }
+async function loadMessage() {
+    const webhookURL = document.getElementById("webhookURL").value;
+    const messageID = document.getElementById("editMessageID").value;
 
-    async function sendMessage() {
-        const webhookURL = document.getElementById("webhookURL").value;
-        const content = document.getElementById("messageContent").value;
+    if (!webhookURL || !messageID) return alert("Enter webhook URL and message ID.");
 
-        let payload = {
-            content: content || null,
-            embeds: embeds.length > 0 ? embeds : null
-        };
+    try {
+        const response = await fetch(webhookURL.replace("/api/webhooks/", "/api/webhooks/messages/") + "/" + messageID);
+        const data = await response.json();
 
-        try {
-            const response = await fetch(webhookURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) alert("Failed to send message.");
-        } catch (error) {
-            console.error("Error:", error);
+        if (data.content) document.getElementById("messageContent").value = data.content;
+        if (data.embeds.length > 0) {
+            document.getElementById("embedTitle").value = data.embeds[0].title || "";
+            document.getElementById("embedDescription").value = data.embeds[0].description || "";
         }
+    } catch (error) {
+        alert("Failed to load message.");
     }
+}
 
-    async function loadMessage() {
-        const webhookURL = document.getElementById("webhookURL").value;
-        const messageId = document.getElementById("editMessageID").value;
-        if (!messageId) return alert("Please enter a message ID.");
+async function editMessage() {
+    const webhookURL = document.getElementById("webhookURL").value;
+    const messageID = document.getElementById("editMessageID").value;
+    const messageContent = document.getElementById("messageContent").value;
+    const embedTitle = document.getElementById("embedTitle").value;
+    const embedDescription = document.getElementById("embedDescription").value;
+    const embedColor = document.getElementById("embedColor").value.replace("#", "");
 
-        try {
-            const response = await fetch(`${webhookURL}/messages/${messageId}`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" }
-            });
+    if (!webhookURL || !messageID) return alert("Enter webhook URL and message ID.");
 
-            if (!response.ok) return alert("Message not found.");
+    const payload = {
+        content: messageContent,
+        embeds: embedTitle || embedDescription ? [{
+            title: embedTitle,
+            description: embedDescription,
+            color: parseInt(embedColor, 16)
+        }] : []
+    };
 
-            const data = await response.json();
-            document.getElementById("messageContent").value = data.content || "";
-
-            if (data.embeds) {
-                embeds = data.embeds.map(embed => ({
-                    title: embed.title || "",
-                    description: embed.description || "",
-                    color: embed.color ? `#${embed.color.toString(16).padStart(6, "0")}` : "#ffffff",
-                    image: embed.image ? embed.image.url : ""
-                }));
-                updateEmbedPreview();
-            }
-        } catch (error) {
-            console.error("Error fetching message:", error);
-        }
-    }
-
-    async function editMessage() {
-        const webhookURL = document.getElementById("webhookURL").value;
-        const messageId = document.getElementById("editMessageID").value;
-        const content = document.getElementById("messageContent").value;
-
-        if (!messageId) return alert("Please enter a message ID.");
-
-        let payload = {
-            content: content || null,
-            embeds: embeds.length > 0 ? embeds : null
-        };
-
-        try {
-            const response = await fetch(`${webhookURL}/messages/${messageId}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) alert("Failed to edit message.");
-        } catch (error) {
-            console.error("Error editing message:", error);
-        }
-    }
-
-    // Event Listeners
-    document.getElementById("addEmbed").addEventListener("click", addEmbed);
-    document.getElementById("sendMessage").addEventListener("click", sendMessage);
-    document.getElementById("loadMessage").addEventListener("click", loadMessage);
-    document.getElementById("editMessage").addEventListener("click", editMessage);
-});
+    fetch(webhookURL.replace("/api/webhooks/", "/api/webhooks/messages/") + "/" + messageID, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    }).then(res => {
+        if (res.ok) alert("Message edited!");
+        else alert("Failed to edit message.");
+    });
+}
