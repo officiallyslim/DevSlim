@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook 2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Manage Webhook 2</h1>
+    
+    <a href="webhooks.html" class="button">Back to Webhooks</a>
+
+    <h2>Send a Message</h2>
+    <form id="webhookForm">
+        <input type="text" id="embedTitle" placeholder="Embed Title (optional)">
+        <input type="text" id="embedDescription" placeholder="Message Content">
+        <input type="color" id="embedColor" value="#ff0000">
+        <label>
+            <input type="checkbox" id="embedToggle"> Send as Embed
+        </label>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <h2>Edit a Message</h2>
+    <form id="editForm">
+        <input type="text" id="editMessageID" placeholder="Message ID">
+        <button type="button" id="loadMessage">Load Message</button>
+        <input type="text" id="editContent" placeholder="New Content">
+        <button type="submit">Edit Message</button>
+    </form>
+
+    <script>
+        const webhookURL = "YOUR_DISCORD_WEBHOOK_URL_2";
+
+        document.getElementById("webhookForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            sendMessage(webhookURL);
+        });
+
+        document.getElementById("loadMessage").addEventListener("click", function() {
+            loadMessage(webhookURL);
+        });
+
+        document.getElementById("editForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            editMessage(webhookURL);
+        });
+    </script>
+    <script src="webhook-script.js"></script>
+</body>
+</html>
