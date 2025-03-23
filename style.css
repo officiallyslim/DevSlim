@@ -29,7 +29,7 @@ body {
     border: 1px solid red;
 }
 
-input, select, button {
+input, button {
     background: black;
     color: red;
     border: 1px solid red;
