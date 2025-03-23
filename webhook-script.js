@@ -1,5 +1,5 @@
 const webhooks = {
-    webhook1: "YOUR_DISCORD_WEBHOOK_URL_1",
+    webhook1: "https://discord.com/api/webhooks/1346170728252440668/fqkyNEgF9LDX-M3orKPrGdYtbmFFhub6WIvok1mARbB_7nOTW17b6RFTeG4dUvfUCMbU",
     webhook2: "YOUR_DISCORD_WEBHOOK_URL_2",
     webhook3: "YOUR_DISCORD_WEBHOOK_URL_3",
     webhook4: "YOUR_DISCORD_WEBHOOK_URL_4",
