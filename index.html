@@ -3,37 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discohook Clone</title>
+    <title>Webhook Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="container">
-        <h1>Discohook Clone</h1>
+        <h1>Webhook Manager</h1>
 
-        <!-- Webhook URL -->
-        <label for="webhookURL">Webhook URL</label>
-        <input type="text" id="webhookURL" placeholder="Enter Discord Webhook URL">
+        <label for="webhookURL">Webhook URL:</label>
+        <input type="text" id="webhookURL" placeholder="Enter your webhook URL">
 
-        <!-- Plain Text Message -->
-        <label>Plain Text Message (Optional)</label>
-        <textarea id="messageContent" placeholder="Enter a message..."></textarea>
+        <h2>Send Message</h2>
+        <textarea id="messageContent" placeholder="Message Content (Supports Multi-Line)"></textarea>
 
-        <!-- Embeds Section -->
-        <div class="embeds">
-            <h2>Embeds</h2>
-            <div id="embedsContainer"></div>
-            <button id="addEmbed">➕ Add Embed</button>
-        </div>
+        <h3>Embed Options</h3>
+        <label for="embedTitle">Embed Title:</label>
+        <input type="text" id="embedTitle" placeholder="Title">
 
-        <!-- Buttons -->
-        <button id="sendMessage">🚀 Send Message</button>
+        <label for="embedDescription">Embed Description:</label>
+        <textarea id="embedDescription" placeholder="Embed Content (Supports Multi-Line)"></textarea>
 
-        <!-- Edit Section -->
-        <h2>Edit a Message</h2>
-        <input type="text" id="editMessageID" placeholder="Enter Message ID">
-        <button id="loadMessage">📥 Load Message</button>
-        <button id="editMessage">✏️ Edit Message</button>
+        <label for="embedColor">Embed Color:</label>
+        <input type="color" id="embedColor" value="#ff0000">
+
+        <button onclick="sendMessage()">Send Message</button>
+
+        <h2>Edit Message</h2>
+        <input type="text" id="editMessageID" placeholder="Message ID">
+        <button onclick="loadMessage()">Load Message</button>
+
+        <button onclick="editMessage()">Edit Message</button>
     </div>
 
     <script src="script.js"></script>
