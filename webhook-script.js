@@ -1,6 +1,6 @@
 const webhooks = {
-    webhook1: "https://discord.com/api/webhooks/1346170728252440668/fqkyNEgF9LDX-M3orKPrGdYtbmFFhub6WIvok1mARbB_7nOTW17b6RFTeG4dUvfUCMbU",
-    webhook2: "https://discord.com/api/webhooks/1348112654148960276/NYHuXKmEQF54EHmHLNuqJsZeJLzJy0S2tRIgraxjOHKTzwAYzQlSYgHKh2eBMtHV16U4",
+    webhook1: "YOUR_DISCORD_WEBHOOK_URL_1",
+    webhook2: "YOUR_DISCORD_WEBHOOK_URL_2",
     webhook3: "YOUR_DISCORD_WEBHOOK_URL_3",
     webhook4: "YOUR_DISCORD_WEBHOOK_URL_4",
     webhook5: "YOUR_DISCORD_WEBHOOK_URL_5"
@@ -44,6 +44,25 @@ document.getElementById("webhookForm").addEventListener("submit", function(e) {
         if (data.id) localStorage.setItem("lastMessageID", data.id);
     })
     .catch(error => alert("Error sending message!"));
+});
+
+// Load Current Message Before Editing
+document.getElementById("editMessageID").addEventListener("change", function() {
+    const selectedWebhook = document.getElementById("webhookSelect").value;
+    const webhookURL = webhooks[selectedWebhook];
+    const messageID = this.value;
+
+    if (!messageID) return;
+
+    fetch(`${webhookURL}/messages/${messageID}`)
+    .then(response => {
+        if (!response.ok) throw new Error("Message not found");
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById("editContent").value = data.content || "[No Content]";
+    })
+    .catch(() => alert("Could not load message content!"));
 });
 
 // Edit Webhook Message
