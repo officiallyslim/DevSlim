@@ -1,49 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #36393f;
-    color: #ffffff;
-    text-align: center;
-}
-
-.container {
-    width: 50%;
-    margin: auto;
-    padding: 20px;
-    background-color: #2f3136;
-    border-radius: 10px;
-}
-
-input, textarea, button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-}
-
-textarea {
-    resize: vertical;
-    height: 100px;
-}
-
-button {
-    background-color: #7289da;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
     color: white;
-    cursor: pointer;
+    font-family: 'Luckiest Guy', cursive;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-button:hover {
-    background-color: #5b6eae;
+.center {
+    position: relative;
+    animation: float 3s infinite ease-in-out;
 }
 
-.embed-section {
-    display: none;
-    background-color: #23272a;
-    padding: 10px;
-    border-radius: 5px;
+.title {
+    font-size: 5rem;
+    text-shadow: 4px 4px 10px rgba(255, 255, 255, 0.3), 0px 0px 15px rgba(255, 255, 255, 0.6);
 }
 
-input[type="color"] {
-    width: 50px;
-    height: 50px;
+.coming-soon {
+    font-size: 2rem;
+    color: #ffcc00;
+    text-shadow: 2px 2px 5px rgba(255, 204, 0, 0.5);
+}
+
+.status {
+    font-size: 1.2rem;
+    color: #ccc;
+    font-style: italic;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
