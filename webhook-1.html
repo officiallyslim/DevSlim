@@ -53,44 +53,62 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert("Message sent!");
-                console.log("Sent message:", data);
+                if (data.id) {
+                    localStorage.setItem("lastMessageID", data.id);
+                    document.getElementById("editMessageID").value = data.id; // Auto-fill message ID field
+                    alert(`Message sent! Message ID: ${data.id}`);
+                } else {
+                    alert("Message sent, but couldn't retrieve message ID.");
+                }
             })
-            .catch(error => alert("Error sending message!"));
+            .catch(error => {
+                alert("Error sending message!");
+                console.error("Error:", error);
+            });
         });
 
         // Load Message for Editing
         document.getElementById("loadMessage").addEventListener("click", function() {
-            const messageID = document.getElementById("editMessageID").value;
+            const messageID = document.getElementById("editMessageID").value || localStorage.getItem("lastMessageID");
             if (!messageID) return alert("Please enter a valid message ID.");
 
             fetch(`${webhookURL}/messages/${messageID}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error("Message not found.");
+                return response.json();
+            })
             .then(data => {
                 document.getElementById("editContent").value = data.content || "[No Content]";
+                alert("Message loaded! You can now edit it.");
             })
-            .catch(() => alert("Could not load message content!"));
+            .catch(error => {
+                alert("Could not load message content! Ensure it's sent from this webhook.");
+                console.error("Error:", error);
+            });
         });
 
         // Edit Message
         document.getElementById("editForm").addEventListener("submit", function(e) {
             e.preventDefault();
 
-            const messageID = document.getElementById("editMessageID").value;
+            const messageID = document.getElementById("editMessageID").value || localStorage.getItem("lastMessageID");
             const newContent = document.getElementById("editContent").value;
 
-            if (!messageID) {
-                alert("Please enter a valid message ID.");
-                return;
-            }
+            if (!messageID) return alert("Please enter a valid message ID.");
 
             fetch(`${webhookURL}/messages/${messageID}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ content: newContent })
             })
-            .then(() => alert("Message edited successfully!"))
-            .catch(() => alert("Failed to edit message!"));
+            .then(response => {
+                if (!response.ok) throw new Error("Edit failed.");
+                alert("Message edited successfully!");
+            })
+            .catch(error => {
+                alert("Failed to edit message! Ensure it's sent from this webhook.");
+                console.error("Error:", error);
+            });
         });
     </script>
 </body>
